@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dataverse-triage": {
+      "type": "http",
+      "url": "https://<your-function-app>.azurewebsites.net/api/mcp",
+      "headers": {
+        "Authorization": "Bearer ${DATAVERSE_TRIAGE_MCP_KEY}"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "zero-ping-pong-triage-app",
+  "version": "0.1.0",
+  "description": "Sample Dataverse integration plus the Dataverse triage MCP server, in one Azure Functions app",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "mcp:stdio": "node src/mcp/stdio.js"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.5.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

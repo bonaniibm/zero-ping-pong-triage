@@ -1,0 +1,8 @@
+{
+  "name": "zero-ping-pong-triage",
+  "description": "Dataverse triage pack for Azure SRE Agent: read-only Dataverse diagnostics plus a triage skill that ends every Dynamics 365 integration incident with an ownership verdict.",
+  "version": "0.1.0",
+  "author": { "name": "Bonani Paul Chaudhury" },
+  "license": "MIT",
+  "keywords": ["dataverse", "dynamics-365", "power-platform", "integration", "triage"]
+}
