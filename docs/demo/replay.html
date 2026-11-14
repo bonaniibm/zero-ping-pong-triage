@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Zero Ping-Pong Triage - replay of scenario 1</title>
+<style>
+  :root { --bg:#0b1220; --panel:#111a2e; --line:#24304a; --text:#e6edf7; --muted:#93a1b8; --teal:#2dd4bf; --violet:#a78bfa; --amber:#fbbf24; --red:#f87171; }
+  * { box-sizing: border-box; }
+  body { margin:0; width:1280px; height:720px; background:var(--bg); color:var(--text); font-family:"Segoe UI",Arial,sans-serif; overflow:hidden; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:22px 36px 10px; }
+  header h1 { font-size:24px; font-weight:600; margin:0; }
+  header .clock { font-size:30px; font-weight:600; color:var(--amber); font-variant-numeric:tabular-nums; }
+  .sub { padding:0 36px; color:var(--muted); font-size:15px; }
+  .report { margin:14px 36px 0; padding:14px 18px; background:var(--panel); border:1px solid var(--line); border-radius:10px; font-size:17px; line-height:1.45; }
+  .report b { color:var(--muted); font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase; display:block; margin-bottom:4px; }
+  .planes { display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:16px 36px 0; }
+  .plane { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; height:272px; }
+  .plane h2 { margin:0 0 10px; font-size:16px; font-weight:600; }
+  .azure h2 { color:var(--teal); } .dv h2 { color:var(--violet); }
+  .ev { font-size:15px; line-height:1.4; padding:8px 10px; border-radius:8px; margin-bottom:8px; background:#0d1526; border-left:3px solid var(--line); opacity:0; }
+  .ev.on { opacity:1; } .azure .ev.on { border-left-color:var(--teal); } .dv .ev.on { border-left-color:var(--violet); }
+  .ev.now { outline:1px solid var(--amber); }
+  .ev code { color:var(--amber); font-family:Consolas,monospace; font-size:14px; }
+  .ev .t { color:var(--muted); font-size:12px; margin-right:6px; font-variant-numeric:tabular-nums; }
+  .ev .err { color:var(--red); }
+  .verdict { margin:16px 36px 0; padding:14px 18px; border-radius:12px; border:1px solid #7c5a10; background:#1f1a0b; opacity:0; display:grid; grid-template-columns:auto 1fr; column-gap:18px; row-gap:4px; font-size:15.5px; }
+  .verdict.on { opacity:1; }
+  .verdict h3 { grid-column:1/3; margin:0 0 4px; font-size:14px; letter-spacing:.06em; color:var(--amber); }
+  .verdict dt { color:var(--muted); } .verdict dd { margin:0; }
+  .verdict dd b { color:#fde68a; }
+  footer { position:absolute; left:36px; right:36px; bottom:12px; display:flex; justify-content:space-between; color:var(--muted); font-size:12.5px; }
+</style>
+</head>
+<body>
+<header><h1>Azure SRE Agent + Dataverse triage pack</h1><div class="clock" id="clock">+0s</div></header>
+<div class="sub">Scenario 1: a Service Bus key is regenerated; the Dataverse service endpoint still holds the old key</div>
+<div class="report"><b>What the agent was told</b>Accounts created in Dynamics 365 since about 14:53 UTC are not reaching the ERP. Accounts created before that arrived fine. Nobody has seen an error. Find out what is wrong and who needs to act.</div>
+<div class="planes">
+  <div class="plane azure"><h2>Azure plane · built-in tools</h2>
+    <div class="ev" data-step="1"><span class="t">+45s</span>Activity log: keys of Service Bus rule <code>dataverse-send</code> were regenerated</div>
+    <div class="ev" data-step="2"><span class="t">+61s</span>Service Bus metrics: events still arrived intermittently, so the rotation alone does not explain a full stop</div>
+    <div class="ev" data-step="7"><span class="t">+85s</span>Function logs: last two account events processed at 14:53:27. The break is upstream of the Function</div>
+  </div>
+  <div class="plane dv"><h2>Dataverse plane · triage MCP tools (read-only)</h2>
+    <div class="ev" data-step="3"><span class="t">+64s</span><code>dv_environment_summary</code> plug-in tracing is on</div>
+    <div class="ev" data-step="4"><span class="t">+66s</span><code>dv_failed_system_jobs</code> 3 jobs waiting to retry: <span class="err">401 InvalidSignature</span></div>
+    <div class="ev" data-step="5"><span class="t">+67s</span><code>dv_service_endpoints</code> step uses key <code>dataverse-send</code>; last success 14:53:18, first failure 14:53:49</div>
+    <div class="ev" data-step="6"><span class="t">+70s</span><code>dv_recent_changes</code> endpoint last edited 14:34, before the newest rotation</div>
+  </div>
+</div>
+<dl class="verdict" id="verdict">
+  <h3>OWNERSHIP VERDICT · +95s</h3>
+  <dt>Owner</dt><dd><b>Azure integration team</b> (plane: Azure, confidence: high)</dd>
+  <dt>What broke</dt><dd>Dataverse can no longer authenticate when posting new account events to Service Bus</dd>
+  <dt>Next action</dt><dd>Set the Dataverse endpoint to the current <code>dataverse-send</code> key with the CRM admin, then verify the retries</dd>
+  <dt>Not the cause</dt><dd>The downstream Function: it processed every event that reached it</dd>
+</dl>
+<footer><span>Replay built from the transcript of a real run (docs/runs/scenario-1-key-rotation.md). Timings are the agent's own.</span><span>github.com/bonaniibm/zero-ping-pong-triage</span></footer>
+<script>
+  const step = parseInt(new URLSearchParams(location.search).get('step') || '8', 10);
+  const clocks = ['+0s', '+45s', '+61s', '+64s', '+66s', '+67s', '+70s', '+85s', '+95s'];
+  document.getElementById('clock').textContent = clocks[Math.min(step, 8)];
+  document.querySelectorAll('.ev').forEach((e) => {
+    const s = parseInt(e.dataset.step, 10);
+    if (s <= step) e.classList.add('on');
+    if (s === step) e.classList.add('now');
+  });
+  if (step >= 8) document.getElementById('verdict').classList.add('on');
+</script>
+</body>
+</html>

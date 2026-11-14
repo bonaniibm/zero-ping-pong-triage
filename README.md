@@ -1,8 +1,8 @@
-# Zero Ping-Pong Triage
+﻿# Zero Ping-Pong Triage
 
 **A Dataverse triage pack for Azure SRE Agent.** It gives the agent read-only eyes on the Dataverse side of a
 Dynamics 365 integration, plus a triage procedure, so every integration incident ends with one thing:
-an **ownership verdict** — which plane broke, which component, the evidence from both sides, and who acts next.
+an **ownership verdict** â€” which plane broke, which component, the evidence from both sides, and who acts next.
 
 > Status: proof of concept. Built and tested against one Developer environment. Not a supported product.
 
@@ -21,7 +21,7 @@ user, a service endpoint holding a stale key). The ticket then bounces between t
 | Triage skill | `skills/dataverse-integration-triage/SKILL.md` | The procedure: facts from Azure, evidence from Dataverse, line up both change timelines, name one owner |
 | Custom agent | `agent/dataverse-integration-triage.yaml` | A specialist the response plan routes integration alerts to |
 | Plugin manifest | `plugin.json`, `.mcp.json` | Lets Azure SRE Agent install the skill from this repo URL |
-| Sample integration | `src/app/src/functions` | ERP → Service Bus → Function → Dataverse contact, and Dataverse account → service endpoint → Service Bus → Function |
+| Sample integration | `src/app/src/functions` | ERP â†’ Service Bus â†’ Function â†’ Dataverse contact, and Dataverse account â†’ service endpoint â†’ Service Bus â†’ Function |
 | Chaos kit | `scripts/chaos.mjs` | Injects known failures, and puts them back |
 | Infrastructure | `infra/*.bicep` | The sample integration, and the SRE Agent with its connectors |
 
@@ -40,6 +40,8 @@ user, a service endpoint holding a stale key). The ticket then bounces between t
 All tools issue GET requests only. Key values and secrets are never returned.
 
 ![Architecture](docs/images/architecture.png)
+
+![Replay of scenario 1](docs/demo/scenario-1-replay.gif)
 
 ## Results so far
 
@@ -115,7 +117,7 @@ that tenant in a second profile and point `ZPP_DATAVERSE_AZ_CONFIG_DIR` at it.
 
 ### Already have an agent?
 
-In the SRE Agent portal go to **Build + setup → Extensions → Plugins → Install GitHub plugin**, enter this
+In the SRE Agent portal go to **Build + setup â†’ Extensions â†’ Plugins â†’ Install GitHub plugin**, enter this
 repository, then add the `dataverse-triage` connector with your MCP URL and bearer key.
 
 ## Cost and safety notes
