@@ -69,6 +69,8 @@ comparison would not have been clean.
 
 Undo with `fix-key`, `fix-plugin`, `enable-user`, and clear the queue with `drain-dlq`.
 
+When you are finished, `node scripts/teardown-dataverse.mjs` removes everything the setup and the chaos kit created in Dataverse; then delete the resource group and the two app registrations.
+
 ## Set it up
 
 You need an Azure subscription where you are Owner, a Dataverse environment where you are System Administrator,
