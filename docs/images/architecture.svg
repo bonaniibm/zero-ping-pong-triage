@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="#475569" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="60" y="64" font-size="30" font-weight="600" fill="#0f172a">Zero Ping-Pong Triage: one agent, two planes</text>
+  <text x="60" y="98" font-size="18" fill="#475569">Azure SRE Agent reads Azure natively and reads Dataverse through a read-only triage MCP server</text>
+
+  <rect x="60" y="140" width="700" height="330" rx="16" fill="#f0fdfa" stroke="#0f766e" stroke-dasharray="7 6"/>
+  <text x="84" y="178" font-size="20" font-weight="600" fill="#115e59">Azure plane</text>
+  <g font-size="17" fill="#134e4a">
+    <rect x="84" y="200" width="310" height="70" rx="10" fill="#ccfbf1" stroke="#0f766e"/><text x="239" y="231" text-anchor="middle" font-weight="600">Service Bus</text><text x="239" y="254" text-anchor="middle" font-size="14">erp-contacts, dataverse-events</text>
+    <rect x="424" y="200" width="310" height="70" rx="10" fill="#ccfbf1" stroke="#0f766e"/><text x="579" y="231" text-anchor="middle" font-weight="600">Azure Functions</text><text x="579" y="254" text-anchor="middle" font-size="14">syncContact, onAccountEvent</text>
+    <rect x="84" y="290" width="310" height="70" rx="10" fill="#ccfbf1" stroke="#0f766e"/><text x="239" y="321" text-anchor="middle" font-weight="600">Application Insights</text><text x="239" y="344" text-anchor="middle" font-size="14">traces with Dataverse request ids</text>
+    <rect x="424" y="290" width="310" height="70" rx="10" fill="#ccfbf1" stroke="#0f766e"/><text x="579" y="321" text-anchor="middle" font-weight="600">Azure Monitor alert</text><text x="579" y="344" text-anchor="middle" font-size="14">dead-lettered messages &gt; 0</text>
+    <rect x="84" y="380" width="650" height="64" rx="10" fill="#ccfbf1" stroke="#0f766e"/><text x="409" y="408" text-anchor="middle" font-weight="600">Activity log</text><text x="409" y="430" text-anchor="middle" font-size="14">deployments, setting changes, key regeneration</text>
+  </g>
+
+  <rect x="840" y="140" width="700" height="330" rx="16" fill="#f5f3ff" stroke="#6d28d9" stroke-dasharray="7 6"/>
+  <text x="864" y="178" font-size="20" font-weight="600" fill="#4c1d95">Dataverse plane (Dynamics 365)</text>
+  <g font-size="17" fill="#3b0764">
+    <rect x="864" y="200" width="310" height="70" rx="10" fill="#ede9fe" stroke="#6d28d9"/><text x="1019" y="231" text-anchor="middle" font-weight="600">Plug-ins and steps</text><text x="1019" y="254" text-anchor="middle" font-size="14">plug-in trace log</text>
+    <rect x="1204" y="200" width="310" height="70" rx="10" fill="#ede9fe" stroke="#6d28d9"/><text x="1359" y="231" text-anchor="middle" font-weight="600">System jobs</text><text x="1359" y="254" text-anchor="middle" font-size="14">failed or waiting to retry</text>
+    <rect x="864" y="290" width="310" height="70" rx="10" fill="#ede9fe" stroke="#6d28d9"/><text x="1019" y="321" text-anchor="middle" font-weight="600">Service endpoints</text><text x="1019" y="344" text-anchor="middle" font-size="14">where Dataverse posts, which key</text>
+    <rect x="1204" y="290" width="310" height="70" rx="10" fill="#ede9fe" stroke="#6d28d9"/><text x="1359" y="321" text-anchor="middle" font-weight="600">Application users</text><text x="1359" y="344" text-anchor="middle" font-size="14">enabled state and roles</text>
+    <rect x="864" y="380" width="650" height="64" rx="10" fill="#ede9fe" stroke="#6d28d9"/><text x="1189" y="408" text-anchor="middle" font-weight="600">Change history</text><text x="1189" y="430" text-anchor="middle" font-size="14">solutions, assemblies, steps, endpoints, users</text>
+  </g>
+
+  <line x1="764" y1="305" x2="836" y2="305" stroke="#475569" stroke-width="2" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text x="800" y="292" text-anchor="middle" font-size="13" fill="#475569">traffic</text>
+
+  <line x1="300" y1="474" x2="300" y2="546" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="1300" y1="474" x2="1300" y2="546" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="110" y="550" width="380" height="84" rx="12" fill="#ccfbf1" stroke="#0f766e"/>
+  <text x="300" y="585" text-anchor="middle" font-size="19" font-weight="600" fill="#134e4a">Built-in Azure tools</text>
+  <text x="300" y="611" text-anchor="middle" font-size="15" fill="#115e59">logs, metrics, activity log, alerts</text>
+
+  <rect x="1110" y="550" width="380" height="84" rx="12" fill="#ede9fe" stroke="#6d28d9"/>
+  <text x="1300" y="585" text-anchor="middle" font-size="19" font-weight="600" fill="#3b0764">Dataverse triage MCP server</text>
+  <text x="1300" y="611" text-anchor="middle" font-size="15" fill="#4c1d95">7 read-only tools, GET requests only</text>
+
+  <path d="M490 592 L600 592" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+  <path d="M1110 592 L1000 592" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="604" y="540" width="392" height="104" rx="14" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <text x="800" y="580" text-anchor="middle" font-size="22" font-weight="600" fill="#0f172a">Azure SRE Agent</text>
+  <text x="800" y="608" text-anchor="middle" font-size="15" fill="#334155">triage skill + custom agent</text>
+  <text x="800" y="630" text-anchor="middle" font-size="15" fill="#334155">started by alert, HTTP trigger or chat</text>
+
+  <line x1="800" y1="648" x2="800" y2="716" stroke="#475569" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="470" y="720" width="660" height="120" rx="14" fill="#fffbeb" stroke="#b45309" stroke-width="1.5"/>
+  <text x="800" y="758" text-anchor="middle" font-size="22" font-weight="600" fill="#78350f">Ownership verdict</text>
+  <text x="800" y="788" text-anchor="middle" font-size="16" fill="#92400e">one owner, the plane, evidence from both sides,</text>
+  <text x="800" y="812" text-anchor="middle" font-size="16" fill="#92400e">the triggering change, the next action, what was ruled out</text>
+</svg>

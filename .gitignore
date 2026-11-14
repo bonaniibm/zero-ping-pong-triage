@@ -10,3 +10,7 @@ dist/
 .vs/
 *.user
 local.settings.json
+
+# publication drafts stay local
+docs/article-medium.md
+docs/linkedin-post.md

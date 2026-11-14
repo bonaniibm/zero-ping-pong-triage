@@ -39,6 +39,23 @@ user, a service endpoint holding a stale key). The ticket then bounces between t
 
 All tools issue GET requests only. Key values and secrets are never returned.
 
+![Architecture](docs/images/architecture.png)
+
+## Results so far
+
+Each failure was injected with the chaos kit and handed to the agent with only what a real person would know.
+One run per scenario: a demonstration, not a benchmark. Full transcripts are in [`docs/runs`](docs/runs).
+
+| Injected failure | How the agent was started | Owner in the verdict | Time to verdict | Correct? |
+|---|---|---|---|---|
+| Service Bus key regenerated, Dataverse endpoint keeps the old key | Chat | Azure integration team | 95 s | Yes |
+| Plug-in step that throws on integration writes is switched on | Azure Monitor alert, automatically | CRM development team | 72 s | Yes |
+| Integration's application user disabled | HTTP trigger | CRM platform / admin team | 101 s | Yes |
+| Contacts reference an account Dataverse does not have | HTTP trigger | ERP business / data owners | 77 s | Yes |
+
+There is no "without the pack" baseline: an Azure-only custom agent still reached the Dataverse tools, so the
+comparison would not have been clean.
+
 ## Failure scenarios in the chaos kit
 
 | Command | What it breaks | What Azure shows | Where the cause is |
@@ -80,6 +97,18 @@ Azure CLI, Power Platform CLI, Node 20+ and the .NET SDK.
    ```powershell
    ./scripts/configure-agent.ps1
    ```
+
+6. Break something and ask:
+   ```bash
+   node scripts/chaos.mjs break-plugin
+   ```
+   ```powershell
+   ./scripts/ask-agent.ps1 -Message "Contacts from the ERP stopped appearing in Dynamics 365 a few minutes ago"
+   ```
+   ```powershell
+   ./scripts/export-thread.ps1 -ThreadId <id> -Out docs/runs/my-run.md
+   ```
+   `ask-agent.ps1` uses an HTTP trigger, the same route an "Ask SRE Agent" button in Dynamics 365 would take.
 
 If the Dataverse environment lives in a different tenant from the Azure subscription, sign the Azure CLI in to
 that tenant in a second profile and point `ZPP_DATAVERSE_AZ_CONFIG_DIR` at it.
